@@ -18,7 +18,7 @@ once data changed on 1 side it will automatically sync to other browser via sock
 
 Unitest:
 in current project i'm using builtin django unitest, i created a unitest library for api services by simplify the process, 
-so developer only need to write payload, expected response from server and rule of assert process, please check on accounts/tests.py and todo/tests.py 
+so developer only need to write payload, expected response from server and rule of assert process, please check on accounts/tests.py and todos/tests.py 
 
 Pytest:
 i added 2 pytest unitest on accounts app
