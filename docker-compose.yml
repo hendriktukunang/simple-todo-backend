@@ -1,0 +1,84 @@
+version: '3'
+
+volumes:
+  simple_todo_db_data: {}
+  simple_todo_redis_data: {}
+  simple_todo_rabbitmq_data : {}
+
+services:
+  app:
+    build:
+      context: .
+    env_file:
+      - ./simple_todo_backend/.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./simple_todo_backend:/simple_todo_backend
+    command: >
+      sh -c "python manage.py migrate &&
+        python -u manage.py runserver 0.0.0.0:8000"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db
+      - redis
+      - rabbitmq
+    networks:
+      - simple_todo_network
+
+  worker:
+    build:
+      context: .
+    volumes:
+      - ./simple_todo_backend:/simple_todo_backend
+    command: celery worker -B -l info -A simple_todo_backend
+    depends_on:
+      - rabbitmq
+      - app
+    links:
+      - rabbitmq
+    env_file:
+      - ./simple_todo_backend/.env
+    restart: always
+    networks:
+      - simple_todo_network
+
+  db:
+    image: postgres:12.2
+    restart: always
+    environment:
+      POSTGRES_USER: simple_todo_user
+      POSTGRES_DB: simple_todo_db
+      POSTGRES_PASSWORD: secret_password
+    ports:
+      - "5430:5432"
+    networks:
+      - simple_todo_network
+
+  redis:
+    container_name: simple_todo_redis
+    image: redis:3.2.10-alpine
+    restart: always
+    volumes:
+      - simple_todo_redis_data:/data
+    ports:
+      - 6380:6379
+    networks:
+      - simple_todo_network
+
+  rabbitmq:
+    container_name: simple_todo_rabbitmq
+    image: rabbitmq:3.8.2-alpine
+    restart: always
+    volumes:
+      - simple_todo_rabbitmq_data:/data
+    ports:
+      - 5679:5672
+    networks:
+      - simple_todo_network
+
+networks:
+  simple_todo_network:
+    ipam:
+      driver: default

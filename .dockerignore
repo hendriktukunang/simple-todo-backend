@@ -1,0 +1,18 @@
+.circleci
+.eslintrc
+.gitignore
+.git
+*.sql
+*.md
+.env
+.venv
+venv
+.cache
+documentation
+pdf-engine
+.idea
+.pyc
+.pytest_cache
+__pycache__ /
+celerybeat.pid
+logfile*
