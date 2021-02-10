@@ -14,7 +14,7 @@ Project Explanation points:
 
 App Feature:
 it has simple read, create and delete todo operation, with socket sync, so you can try to login on 2 different tab/browser, 
-once data changed on 1 side it will automatically sync to other browser via socket
+once data changed on 1 side it will automatically sync to other browser via socket and task executed under celery
 
 Unitest:
 in current project i'm using builtin django unitest, i created a unitest library for api services by simplify the process, 
