@@ -27,31 +27,21 @@ class CreateTodoTest(SerializedApiRequestUnitest, BaseObtainAuthToken, CreateTod
 class ListTodoTest(SerializedApiRequestUnitest, BaseObtainAuthToken, ListTodo):
     depedency_testcases = [AuthWithCorrectCredentialsTest, CreateTodoTest]
     payload = {}
-    expected_response = {
-        "count": None,
-        "current": None,
-        "next": None,
-        "results": [
-            {
-                "id": None,
-                "task": "set goals",
-                "created_at": None,
-                "last_updated_at": None,
-            }
-        ],
-    }
-    rule = {
-        "count": {"ignore": True},
-        "current": {"ignore": True},
-        "next": {"ignore": True},
-        "results": [
-            {
-                "id": {"ignore": True},
-                "created_at": {"ignore": True},
-                "last_updated_at": {"ignore": True},
-            }
-        ],
-    }
+    expected_response = [
+        {
+            "id": None,
+            "task": "set goals",
+            "created_at": None,
+            "last_updated_at": None,
+        }
+    ]
+    rule = [
+        {
+            "id": {"ignore": True},
+            "created_at": {"ignore": True},
+            "last_updated_at": {"ignore": True},
+        }
+    ]
 
 
 class GetTodoTest(SerializedApiRequestUnitest, BaseObtainAuthToken, GetTodo):
